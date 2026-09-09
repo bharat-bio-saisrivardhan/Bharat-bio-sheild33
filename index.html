@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><title>Bharat-Bio Shield</title>
+<style>body{font-family:Arial;text-align:center;padding:30px;background:#f0f8ff} .box{background:white;padding:20px;border-radius:15px;box-shadow:0 4px 10px #ccc;max-width:400px;margin:auto} input{padding:12px;width:90%;margin:10px;border-radius:8px;border:1px solid #ccc} #res{font-weight:bold;margin-top:15px;font-size:18px}</style>
+</head><body>
+<div class="box">
+<h2>🛡️ Bharat-Bio Shield</h2>
+<p>Solving ₹9518 Cr Mule Fraud</p>
+<input id="pwd" type="password" placeholder="Password type cheyandi...">
+<p id="res">Type cheyagane risk score vastundi</p>
+</div>
+<script>
+let s; document.getElementById('pwd').addEventListener('keydown',()=>s=Date.now());
+document.getElementById('pwd').addEventListener('keyup',async()=>{
+ let hold=Date.now()-s;
+ let r=await fetch('/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hold:hold})});
+ let d=await r.json();
+ document.getElementById('res').innerHTML=`Hold: ${hold}ms<br>Risk: ${d.risk_score}% - ${d.status}`;
+ document.getElementById('res').style.color=d.risk_score>50?'red':'green';
+});
+</script>
+</body></html>
