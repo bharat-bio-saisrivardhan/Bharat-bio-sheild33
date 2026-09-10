@@ -3,48 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bharat-Bio Shield</title>
+<title>Bharat-Bio Shield 33</title>
 <style>
-body{font-family:Arial;background:#f0f2f5;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:#fff;width:90%;max-width:450px;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);text-align:center}
-input{width:100%;padding:15px;font-size:18px;border:2px solid #333;border-radius:12px;outline:none;box-sizing:border-box}
-#risk{margin-top:20px;padding:18px;border-radius:12px;font-weight:bold;font-size:20px;min-height:50px;background:#fff3cd;color:#856404}
-.safe{background:#d4edda!important;color:#155724!important;border:2px solid #28a745}
-.fraud{background:#f8d7da!important;color:#721c24!important;border:2px solid #dc3545}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:15px}
+.card{background:#fff;width:100%;max-width:420px;padding:28px;border-radius:22px;box-shadow:0 15px 40px rgba(0,0,0,0.3);text-align:center}
+h1{font-size:24px;margin-bottom:5px}
+.sub{color:#64748b;font-size:13px;margin-bottom:20px}
+input{width:100%;padding:16px;font-size:18px;border:2.5px solid #000;border-radius:12px;outline:none}
+input:focus{border-color:#3b82f6}
+#riskBox{margin-top:18px;padding:20px;border-radius:14px;font-weight:bold;font-size:20px;min-height:75px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#fef9c3;color:#713f12;transition:0.3s}
+.safe{background:#dcfce7!important;color:#14532d!important;border:2px solid #22c55e}
+.fraud{background:#fee2e2!important;color:#7f1d1d!important;border:2px solid #ef4444}
+#stats{margin-top:12px;font-size:12px;color:#64748b;background:#f8fafc;padding:8px;border-radius:8px}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold;margin-top:8px}
+.b-safe{background:#22c55e;color:#fff}
+.b-fraud{background:#ef4444;color:#fff}
 </style>
 </head>
 <body>
 <div class="card">
-<div style="font-size:40px">🛡️</div>
-<h1>Bharat-Bio Shield</h1>
-<p style="color:#555;font-size:14px">Solving ₹9518 Cr Mule Fraud</p>
-<input type="text" id="passInput" placeholder="Password type cheyandi...">
-<div id="risk">Type cheyandi... Risk chupistundi</div>
-<p id="stats" style="font-size:12px;color:#666;margin-top:10px">Hold: -- | Speed: --</p>
+<div style="font-size:42px">🛡️</div>
+<h1>Bharat-Bio Shield 33</h1>
+<p class="sub">Solving ₹9518 Cr Mule Fraud - Behavioural AI</p>
+
+<input id="pwd" type="text" placeholder="Password type chey... Ex: Raju@123" autocomplete="off">
+
+<div id="riskBox">
+<div>Type chey Sai...</div>
+<small style="font-size:12px;margin-top:4px">Risk ikkada kanipistundi</small>
 </div>
+
+<div id="stats">Hold: --ms | Flight: --ms | Speed: -- WPM | Keys: 0</div>
+
+<div style="margin-top:15px;font-size:11px;color:#94a3b8;text-align:left">
+<strong>Demo:</strong><br>
+• Slow ga hold chesi type chey = GREEN SAFE<br>
+• Fast ga type chey = RED FRAUD
+</div>
+</div>
+
 <script>
-const input=document.getElementById('passInput');
-const box=document.getElementById('risk');
+let down=0, lastUp=0, holds=[], flights=[], start=0;
+const inp=document.getElementById('pwd');
+const box=document.getElementById('riskBox');
 const stats=document.getElementById('stats');
-let down=0,lastUp=0,holds=[],flights=[],start=0;
-input.addEventListener('focus',()=>{holds=[];flights=[];start=Date.now();});
-input.addEventListener('keydown',()=>{if(down===0){down=Date.now();if(lastUp!==0)flights.push(down-lastUp);}});
-input.addEventListener('keyup',()=>{
- if(down!==0){
-  let h=Date.now()-down;
-  if(h>10&&h<1000)holds.push(h);
-  lastUp=Date.now();down=0;
-  if(holds.length<3){box.innerHTML=`Typing... ${holds.length} keys`;return;}
-  let avgH=holds.reduce((a,b)=>a+b,0)/holds.length;
-  let avgF=flights.length?flights.reduce((a,b)=>a+b,0)/flights.length:0;
-  let wpm=Math.round((input.value.length/5)/((Date.now()-start)/60000))||0;
-  stats.innerText=`Hold: ${avgH.toFixed(0)}ms | Flight: ${avgF.toFixed(0)}ms | Speed: ${wpm} WPM`;
-  if(avgH>110&&wpm<65){box.className='safe';box.innerHTML=`✅ Risk: 12% - SAFE<br><small>Real Owner - ${avgH.toFixed(0)}ms</small>`;}
-  else if(avgH<85||wpm>75){box.className='fraud';box.innerHTML=`🚨 Risk: 94% - FRAUD<br><small>MULE ACCOUNT BLOCKED - ${avgH.toFixed(0)}ms</small>`;}
-  else{box.className='';box.style.background='#fff3cd';box.innerHTML=`⚠️ Risk: 48% - SUSPICIOUS<br><small>${avgH.toFixed(0)}ms</small>`;}
- }
+
+inp.addEventListener('focus',()=>{
+  holds=[];flights=[];start=Date.now();
+  box.className='';box.style.background='#fef9c3';
+  box.innerHTML='<div>Ready... type chey</div><small style="font-size:12px">Behaviour capture avuthundi</small>';
 });
-input.addEventListener('input',(e)=>{if(e.target.value===''){holds=[];flights=[];lastUp=0;box.className='';box.innerHTML='Type cheyandi... Risk chupistundi';stats.innerText='Hold: -- | Speed: --';}});
+
+inp.addEventListener('keydown',()=>{
+  if(down===0){
+    down=Date.now();
+    if(lastUp!==0){
+      let gap=down-lastUp;
+      if(gap>10 && gap<2000) flights.push(gap);
+    }
+  }
+});
+
+inp.addEventListener('keyup',()=>{
+  if(down!==0){
+    let hold=Date.now()-down;
+    if(hold>5 && hold<1000) holds.push(hold);
+    lastUp=Date.now();down=0;
+
+    if(holds.length<3){
+      box.innerHTML=`<div>Typing... ${holds.length} keys</div><small>Inka 2 keys type chey</small>`;
+      return;
+    }
+
+    let avgH=holds.reduce((a,b)=>a+b,0)/holds.length;
+    let avgF=flights.length?flights.reduce((a,b)=>a+b,0)/flights.length:0;
+    let sec=(Date.now()-start)/1000;
+    let wpm= sec>0.5 ? Math.round((inp.value.length/5)/(sec/60)) : 0;
+
+    stats.innerHTML=`Hold: <b>${avgH.toFixed(0)}ms</b> | Flight: <b>${avgF.toFixed(0)}ms</b> | Speed: <b>${wpm} WPM</b> | Keys: ${holds.length}`;
+
+    if(avgH>70){
+      box.className='safe';
+      box.innerHTML=`<div>✅ Risk: 12% - SAFE</div><small>Real Owner - ${avgH.toFixed(0)}ms - ALLOW</small><span class="badge b-safe">TRANSACTION ALLOWED</span>`;
+    }else if(avgH<50){
+      box.className='fraud';
+      box.innerHTML=`<div>🚨 Risk: 94% - FRAUD</div><small>MULE ACCOUNT BLOCKED - ${avgH.toFixed(0)}ms</small><span class="badge b-fraud">BLOCK & REPORT TO RBI</span>`;
+    }else{
+      box.className='';
+      box.style.background='#fde68a';
+      box.innerHTML=`<div>⚠️ Risk: 48% - SUSPICIOUS</div><small>${avgH.toFixed(0)}ms - Manual Review</small>`;
+    }
+  }
+});
+
+inp.addEventListener('input',(e)=>{
+  if(e.target.value===''){
+    holds=[];flights=[];lastUp=0;start=0;
+    box.className='';box.style.background='#fef9c3';
+    box.innerHTML='<div>Type chey Sai...</div><small>Risk ikkada kanipistundi</small>';
+    stats.innerText='Hold: --ms | Flight: --ms | Speed: -- WPM | Keys: 0';
+  }
+});
 </script>
 </body>
 </html>
