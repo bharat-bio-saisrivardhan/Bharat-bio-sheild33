@@ -1,85 +1,21 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Bharat-Bio Shield 33</title>
-<style>
-body{font-family:Poppins;background:#eef4ff;padding:20px}
-.card{background:white;padding:25px;border-radius:15px;max-width:400px;margin:auto;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
-.input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1.5px solid #ccc}
-.btn{width:100%;padding:14px;background:#1E3A8A;color:white;border:none;border-radius:10px;font-size:16px;margin-top:15px}
-.safe{color:green;font-weight:bold}.fraud{color:red;font-weight:bold}.sus{color:orange;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="card">
+<html><head><title>Bharat-Bio Shield</title>
+<style>body{font-family:Arial;text-align:center;padding:30px;background:#f0f8ff} .box{background:white;padding:20px;border-radius:15px;box-shadow:0 4px 10px #ccc;max-width:400px;margin:auto} input{padding:12px;width:90%;margin:10px;border-radius:8px;border:1px solid #ccc} #res{font-weight:bold;margin-top:15px;font-size:18px}</style>
+</head><body>
+<div class="box">
 <h2>🛡️ Bharat-Bio Shield</h2>
-<p>Secure Login - Typing Behaviour ON</p>
-
-<input id="acc" class="input" placeholder="Account Number: 1234 5678 9012">
-<input id="amt" class="input" placeholder="Amount: ₹25,000">
-<select id="type" class="input"><option value="domestic">🇮🇳 Domestic UPI</option><option value="foreign">🌍 International SWIFT ($)</option></select>
-
-<input id="pass" class="input" type="password" placeholder="Type password here - Behaviour captured">
-
-<p id="live">Hold: - ms | Flight: - ms | WPM: - | Paste: No</p>
-
-<button class="btn" onclick="verify()">Proceed to Verify →</button>
-
-<div id="result" style="margin-top:20px;padding:15px;border-radius:10px;background:#f5f5f5;display:none"></div>
+<p>Solving ₹9518 Cr Mule Fraud</p>
+<input id="pwd" type="password" placeholder="Password type cheyandi...">
+<p id="res">Type cheyagane risk score vastundi</p>
 </div>
-
 <script>
-let keyDownTime=0, lastUpTime=0, holds=[], flights=[], isPaste=false, chars=0, startTime=null;
-
-const passField=document.getElementById('pass');
-
-passField.addEventListener('keydown', e=>{
-  keyDownTime=Date.now();
-  if(!startTime) startTime=Date.now();
-  if(lastUpTime) flights.push(keyDownTime-lastUpTime);
+let s; document.getElementById('pwd').addEventListener('keydown',()=>s=Date.now());
+document.getElementById('pwd').addEventListener('keyup',async()=>{
+ let hold=Date.now()-s;
+ let r=await fetch('/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hold:hold})});
+ let d=await r.json();
+ document.getElementById('res').innerHTML=`Hold: ${hold}ms<br>Risk: ${d.risk_score}% - ${d.status}`;
+ document.getElementById('res').style.color=d.risk_score>50?'red':'green';
 });
-passField.addEventListener('keyup', e=>{
-  let hold=Date.now()-keyDownTime;
-  holds.push(hold);
-  lastUpTime=Date.now();
-  chars++;
-  updateLive();
-});
-passField.addEventListener('paste', e=>{ isPaste=true; updateLive(); });
-
-function updateLive(){
-  let h_avg=holds.length? (holds.reduce((a,b)=>a+b)/holds.length).toFixed(1):0;
-  let f_avg=flights.length? (flights.reduce((a,b)=>a+b)/flights.length).toFixed(1):0;
-  let wpm=startTime? Math.round((chars/5)/((Date.now()-startTime)/60000)):0;
-  document.getElementById('live').innerText=`Hold: ${h_avg}ms | Flight: ${f_avg}ms | WPM: ${wpm} | Paste: ${isPaste?'YES':'No'}`;
-}
-
-async function verify(){
-  let h_avg=holds.length? holds.reduce((a,b)=>a+b)/holds.length:80;
-  let f_avg=flights.length? flights.reduce((a,b)=>a+b)/flights.length:120;
-  let wpm=startTime? Math.round((chars/5)/((Date.now()-startTime)/60000)):0;
-  
-  let payload={
-    hold_avg:h_avg, flight_avg:f_avg, wpm:wpm,
-    is_paste:isPaste, is_foreign: document.getElementById('type').value=='foreign',
-    account: document.getElementById('acc').value, device_new: Math.random()>0.5
-  };
-  
-  let res=await fetch('/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-  let data=await res.json();
-  
-  let div=document.getElementById('result');
-  div.style.display='block';
-  let color=data.status=='SAFE'?'#d4edda':data.status=='SUSPICIOUS'?'#fff3cd':'#f8d7da';
-  div.style.background=color;
-  div.innerHTML=`
-    <h3 class="${data.status=='SAFE'?'safe':data.status=='FRAUD'?'fraud':'sus'}">${data.status} - ${data.risk_score}% Risk</h3>
-    <p>${data.message}</p>
-    <p><b>Action:</b> ${data.action}</p>
-    <p><b>Txn ID:</b> ${data.transaction_id}</p>
-    ${data.otp?`<p><b>Demo OTP:</b> ${data.otp} <input placeholder='Enter OTP'></p>`:''}
-  `;
-}
 </script>
-</body>
-</html>
+</body></html>
