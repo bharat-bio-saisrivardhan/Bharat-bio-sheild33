@@ -8,6 +8,6 @@ Behavioural Biometrics for Mule Account Detection in Indian Banking Solving ₹9
 
 **Status:** Building MVP - Day 1
 
-**Founder:** Student from Rajahmundry, building for Bharat.
+**Founder:** Student from kakinada, building for Bharat.
 
 **Contact:** [Your LinkedIn]
