@@ -1,21 +1,50 @@
 <!DOCTYPE html>
-<html><head><title>Bharat-Bio Shield</title>
-<style>body{font-family:Arial;text-align:center;padding:30px;background:#f0f8ff} .box{background:white;padding:20px;border-radius:15px;box-shadow:0 4px 10px #ccc;max-width:400px;margin:auto} input{padding:12px;width:90%;margin:10px;border-radius:8px;border:1px solid #ccc} #res{font-weight:bold;margin-top:15px;font-size:18px}</style>
-</head><body>
-<div class="box">
-<h2>🛡️ Bharat-Bio Shield</h2>
-<p>Solving ₹9518 Cr Mule Fraud</p>
-<input id="pwd" type="password" placeholder="Password type cheyandi...">
-<p id="res">Type cheyagane risk score vastundi</p>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharat-Bio Shield</title>
+<style>
+body{font-family:Arial;background:#f0f2f5;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+.card{background:#fff;width:90%;max-width:450px;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);text-align:center}
+input{width:100%;padding:15px;font-size:18px;border:2px solid #333;border-radius:12px;outline:none;box-sizing:border-box}
+#risk{margin-top:20px;padding:18px;border-radius:12px;font-weight:bold;font-size:20px;min-height:50px;background:#fff3cd;color:#856404}
+.safe{background:#d4edda!important;color:#155724!important;border:2px solid #28a745}
+.fraud{background:#f8d7da!important;color:#721c24!important;border:2px solid #dc3545}
+</style>
+</head>
+<body>
+<div class="card">
+<div style="font-size:40px">🛡️</div>
+<h1>Bharat-Bio Shield</h1>
+<p style="color:#555;font-size:14px">Solving ₹9518 Cr Mule Fraud</p>
+<input type="text" id="passInput" placeholder="Password type cheyandi...">
+<div id="risk">Type cheyandi... Risk chupistundi</div>
+<p id="stats" style="font-size:12px;color:#666;margin-top:10px">Hold: -- | Speed: --</p>
 </div>
 <script>
-let s; document.getElementById('pwd').addEventListener('keydown',()=>s=Date.now());
-document.getElementById('pwd').addEventListener('keyup',async()=>{
- let hold=Date.now()-s;
- let r=await fetch('/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hold:hold})});
- let d=await r.json();
- document.getElementById('res').innerHTML=`Hold: ${hold}ms<br>Risk: ${d.risk_score}% - ${d.status}`;
- document.getElementById('res').style.color=d.risk_score>50?'red':'green';
+const input=document.getElementById('passInput');
+const box=document.getElementById('risk');
+const stats=document.getElementById('stats');
+let down=0,lastUp=0,holds=[],flights=[],start=0;
+input.addEventListener('focus',()=>{holds=[];flights=[];start=Date.now();});
+input.addEventListener('keydown',()=>{if(down===0){down=Date.now();if(lastUp!==0)flights.push(down-lastUp);}});
+input.addEventListener('keyup',()=>{
+ if(down!==0){
+  let h=Date.now()-down;
+  if(h>10&&h<1000)holds.push(h);
+  lastUp=Date.now();down=0;
+  if(holds.length<3){box.innerHTML=`Typing... ${holds.length} keys`;return;}
+  let avgH=holds.reduce((a,b)=>a+b,0)/holds.length;
+  let avgF=flights.length?flights.reduce((a,b)=>a+b,0)/flights.length:0;
+  let wpm=Math.round((input.value.length/5)/((Date.now()-start)/60000))||0;
+  stats.innerText=`Hold: ${avgH.toFixed(0)}ms | Flight: ${avgF.toFixed(0)}ms | Speed: ${wpm} WPM`;
+  if(avgH>110&&wpm<65){box.className='safe';box.innerHTML=`✅ Risk: 12% - SAFE<br><small>Real Owner - ${avgH.toFixed(0)}ms</small>`;}
+  else if(avgH<85||wpm>75){box.className='fraud';box.innerHTML=`🚨 Risk: 94% - FRAUD<br><small>MULE ACCOUNT BLOCKED - ${avgH.toFixed(0)}ms</small>`;}
+  else{box.className='';box.style.background='#fff3cd';box.innerHTML=`⚠️ Risk: 48% - SUSPICIOUS<br><small>${avgH.toFixed(0)}ms</small>`;}
+ }
 });
+input.addEventListener('input',(e)=>{if(e.target.value===''){holds=[];flights=[];lastUp=0;box.className='';box.innerHTML='Type cheyandi... Risk chupistundi';stats.innerText='Hold: -- | Speed: --';}});
 </script>
-</body></html>
+</body>
+</html>
