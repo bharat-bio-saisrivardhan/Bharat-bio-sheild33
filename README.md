@@ -1,5 +1,7 @@
 # Bharat-Bio Shield 33 🛡️
-Behavioural Biometrics for Mule Account Detection in Indian Banking
+🚀 **Live Demo: https://bharat-bio-sheild33.onrender.com/ - LIVE NOW!**
+
+### Behavioural Biometrics for Mule Account Detection in Indian Banking
 
 **Solving ₹9518 Cr Fraud - RBI Compliant**
 
@@ -9,10 +11,8 @@ Behavioural Biometrics for Mule Account Detection in Indian Banking
 
 **Tech Stack:** Python, FastAPI, Flutter, Random Forest, Machine Learning
 
-**Status:** Building MVP - Day 1 | Founder from Kakinada, building for Bharat.
+**Status:** ✅ Deployed Live on Render | Founder from Kakinada, building for Bharat.
 
 **Founder:** Sai Sri Durga - Student Developer from Kakinada, AP
 
 **Contact & LinkedIn:** https://www.linkedin.com/in/sai-sridurga-b142083a3
-
-**Live Demo:** Coming Soon on Render
