@@ -1,13 +1,18 @@
-# Bharat-bio-sheild33
-Behavioural Biometrics for Mule Account Detection in Indian Banking Solving ₹9518 Cr Fraud RBI Compliant
-**Problem:** India has 27 Lakh Mule Accounts, ₹9518 Cr fraud (Home Ministry 2026). OTP is not enough.
+# Bharat-Bio Shield 33 🛡️
+Behavioural Biometrics for Mule Account Detection in Indian Banking
 
-**Solution:** We detect fraud using how you type, swipe, and hold your phone. Not just password.
+**Solving ₹9518 Cr Fraud - RBI Compliant**
 
-**Tech:** Python, FastAPI, Flutter, Random Forest
+**Problem:** India has 27 Lakh Mule Accounts causing ₹9518 Cr fraud (Home Ministry 2026). OTP alone is not enough.
 
-**Status:** Building MVP - Day 1
+**Solution:** We detect fraud using how you type, swipe, and hold your phone. Not just password. We use behavioural biometrics.
 
-**Founder:** Student from kakinada, building for Bharat.
+**Tech Stack:** Python, FastAPI, Flutter, Random Forest, Machine Learning
 
-**Contact:** [Your LinkedIn]
+**Status:** Building MVP - Day 1 | Founder from Kakinada, building for Bharat.
+
+**Founder:** Sai Sri Durga - Student Developer from Kakinada, AP
+
+**Contact & LinkedIn:** https://www.linkedin.com/in/sai-sridurga-b142083a3
+
+**Live Demo:** Coming Soon on Render
